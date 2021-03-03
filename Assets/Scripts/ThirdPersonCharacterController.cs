@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ThirdPersonCharacterController : MonoBehaviour
+public class ThirdPersonCharacterController : NetworkBehaviour
 {
     private LocalPlayerInput lpInput;
     private Rigidbody rb;
@@ -15,15 +16,22 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public LayerMask groundCheckMask;
     public float jumpForce;
 
-    void Awake()
+    [Header("References")]
+    public Camera playerCamera;
+
+    private void Awake()
     {
         lpInput = GetComponent<LocalPlayerInput>();
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        playerCamera.gameObject.SetActive(isLocalPlayer);
+
+        // if not local player, return
+        if (!isLocalPlayer) return;
+
         isGrounded = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundCheckMask).Length > 0;
         if (isGrounded && lpInput.jumpInput)
         {
@@ -31,8 +39,11 @@ public class ThirdPersonCharacterController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
+        // if not local player, return
+        if (!isLocalPlayer) return;
+
         rb.transform.Translate((lpInput.moveInput * speed * Time.deltaTime), Space.Self);
     }
 }
