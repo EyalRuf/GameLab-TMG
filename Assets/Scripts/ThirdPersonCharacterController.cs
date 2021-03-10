@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class ThirdPersonCharacterController : NetworkBehaviour
+public class ThirdPersonCharacterController : MonoBehaviour
 {
-    private LocalPlayerInput lpInput;
     private Rigidbody rb;
+    private LocalPlayerInput lpInput;
 
     [Header("Movement")]
     public float speed;
@@ -15,35 +15,53 @@ public class ThirdPersonCharacterController : NetworkBehaviour
     public float groundCheckRadius;
     public LayerMask groundCheckMask;
     public float jumpForce;
-
-    [Header("References")]
-    public Camera playerCamera;
+    public float fallMultiplier;
+    public float lowJumpMultiplier;
+    private bool applyJump;
+    private float jumpCD = 0.15f;
+    private bool jumpCDFlag;
 
     private void Awake()
     {
-        lpInput = GetComponent<LocalPlayerInput>();
         rb = GetComponent<Rigidbody>();
+        lpInput = GetComponent<LocalPlayerInput>();
     }
 
-    private void Update()
+    void Update()
     {
-        playerCamera.gameObject.SetActive(isLocalPlayer);
-
-        // if not local player, return
-        if (!isLocalPlayer) return;
-
         isGrounded = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundCheckMask).Length > 0;
-        if (isGrounded && lpInput.jumpInput)
+        if (isGrounded && lpInput.jumpInput && !jumpCDFlag)
         {
-            rb.AddForce(jumpForce * Vector3.up, ForceMode.Acceleration);
+            applyJump = true;
         }
     }
 
     private void FixedUpdate()
     {
-        // if not local player, return
-        if (!isLocalPlayer) return;
-
         rb.transform.Translate((lpInput.moveInput * speed * Time.deltaTime), Space.Self);
+
+        if (applyJump)
+        {
+            rb.velocity += Vector3.up * jumpForce;
+            applyJump = false;
+            jumpCDFlag = true;
+            StartCoroutine(jumpCDApplier());
+        }
+
+        // Applying additional falling physics
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * fallMultiplier * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0 && !lpInput.jumpInput)
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * lowJumpMultiplier * Time.deltaTime;
+        }
+    }
+
+    IEnumerator jumpCDApplier ()
+    {
+        yield return new WaitForSeconds(jumpCD);
+        jumpCDFlag = false;
     }
 }
