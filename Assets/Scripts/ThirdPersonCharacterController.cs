@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
-using Steamworks;
 
-public class ThirdPersonCharacterController : NetworkBehaviour
+public class ThirdPersonCharacterController : MonoBehaviour
 {
-    private LocalPlayerInput lpInput;
     private Rigidbody rb;
-    private string displayName;
-
+    private LocalPlayerInput lpInput;
+    
     [Header("Movement")]
     public float speed;
     public bool isGrounded;
@@ -18,49 +15,53 @@ public class ThirdPersonCharacterController : NetworkBehaviour
     public float groundCheckRadius;
     public LayerMask groundCheckMask;
     public float jumpForce;
-
-    [Header("UI")]
-    public Text nameTag;
-
-    [Header("References")]
-    public Camera playerCamera;
+    public float fallMultiplier;
+    public float lowJumpMultiplier;
+    private bool applyJump;
+    private float jumpCD = 0.15f;
+    private bool jumpCDFlag;
 
     private void Awake()
     {
-        lpInput = GetComponent<LocalPlayerInput>();
         rb = GetComponent<Rigidbody>();
+        lpInput = GetComponent<LocalPlayerInput>();
     }
 
-    private void Start()
+    void Update()
     {
-        if(isLocalPlayer)
+        isGrounded = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundCheckMask).Length > 0;
+        if (isGrounded && lpInput.jumpInput && !jumpCDFlag)
         {
-            displayName = SteamFriends.GetFriendPersonaName(SteamUser.GetSteamID());
+            applyJump = true;
         }
-    }
-
-    private void Update()
-    {
-        playerCamera.gameObject.SetActive(isLocalPlayer);
-        nameTag.text = displayName;
-    }
-
-    private void LateUpdate()
-    {
-        nameTag.transform.parent.LookAt(playerCamera.transform.position);
     }
 
     private void FixedUpdate()
     {
-        if (isLocalPlayer)
-        {
-            rb.transform.Translate((lpInput.moveInput * speed * Time.deltaTime), Space.Self);
+        rb.transform.Translate((lpInput.moveInput * speed * Time.deltaTime), Space.Self);
 
-            isGrounded = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundCheckMask).Length > 0;
-            if (isGrounded && lpInput.jumpInput)
-            {
-                rb.AddForce(jumpForce * Vector3.up, ForceMode.Acceleration);
-            }
+        if (applyJump)
+        {
+            rb.velocity += Vector3.up * jumpForce;
+            applyJump = false;
+            jumpCDFlag = true;
+            StartCoroutine(JumpCDApplier());
         }
+
+        // Applying additional falling physics
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * fallMultiplier * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0 && !lpInput.jumpInput)
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * lowJumpMultiplier * Time.deltaTime;
+        }
+    }
+
+    IEnumerator JumpCDApplier ()
+    {
+        yield return new WaitForSeconds(jumpCD);
+        jumpCDFlag = false;
     }
 }

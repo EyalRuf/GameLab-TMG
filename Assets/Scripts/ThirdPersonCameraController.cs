@@ -11,7 +11,6 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     float mouseX, mouseY;
 
-
     // Start is called before the first frame update
     void Start()
     {
