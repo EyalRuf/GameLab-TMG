@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using UnityEngine.UI;
 
 public class ThirdPersonCharacterController : MonoBehaviour
 {
     private Rigidbody rb;
     private LocalPlayerInput lpInput;
-
+    
     [Header("Movement")]
     public float speed;
     public bool isGrounded;
