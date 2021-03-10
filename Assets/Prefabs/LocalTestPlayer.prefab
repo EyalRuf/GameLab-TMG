@@ -286,7 +286,7 @@ MonoBehaviour:
   speed: 7.5
   isGrounded: 0
   groundCheck: {fileID: 771301310219115562}
-  groundCheckRadius: 0.001
+  groundCheckRadius: 0.01
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -305,6 +305,8 @@ GameObject:
   - component: {fileID: 771301311047579954}
   - component: {fileID: 771301311047579955}
   - component: {fileID: 771301311047579952}
+  - component: {fileID: 6160085175944616158}
+  - component: {fileID: 7286939086476059780}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: PlayerCamera
@@ -394,3 +396,44 @@ MonoBehaviour:
   Player: {fileID: 771301310806685619}
   cameraYClampMin: -45
   cameraYClampMax: 70
+--- !u!114 &6160085175944616158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771301311047579958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d901ddf32d7c84ed4b0f84623ef3a7a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _intensity: 2
+  _radius: 0.25
+  _sampleCount: 3
+  _sampleCountValue: 24
+  _downsampling: 1
+  _occlusionSource: 1
+  _ambientOnly: 0
+  _aoShader: {fileID: 4800000, guid: 7541b5f18b1224a81927d8b1184b122b, type: 3}
+  _quadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &7286939086476059780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771301311047579958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8d76155f53cfc45b4f02922de468b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointOfFocus: {fileID: 771301310806685619}
+  _focusDistance: 10
+  _fNumber: 1.4
+  _useCameraFov: 1
+  _focalLength: 0.175
+  _kernelSize: 2
+  _visualize: 0
+  _shader: {fileID: 4800000, guid: b99c58356816f7b46818fe7e788b2fa1, type: 3}

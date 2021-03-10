@@ -45,7 +45,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
             rb.velocity += Vector3.up * jumpForce;
             applyJump = false;
             jumpCDFlag = true;
-            StartCoroutine(jumpCDApplier());
+            StartCoroutine(JumpCDApplier());
         }
 
         // Applying additional falling physics
@@ -59,7 +59,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
         }
     }
 
-    IEnumerator jumpCDApplier ()
+    IEnumerator JumpCDApplier ()
     {
         yield return new WaitForSeconds(jumpCD);
         jumpCDFlag = false;

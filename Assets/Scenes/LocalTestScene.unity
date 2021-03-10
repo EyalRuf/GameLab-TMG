@@ -214,6 +214,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1626699946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 771301311047579958, guid: 2f66771a75276f24f9df583043493801,
+    type: 3}
+  m_PrefabInstance: {fileID: 5895253536983959957}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1626699947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626699946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8d76155f53cfc45b4f02922de468b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointOfFocus: {fileID: 0}
+  _focusDistance: 10
+  _fNumber: 1.4
+  _useCameraFov: 1
+  _focalLength: 0.175
+  _kernelSize: 2
+  _visualize: 0
+  _shader: {fileID: 4800000, guid: b99c58356816f7b46818fe7e788b2fa1, type: 3}
+--- !u!114 &1626699948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626699946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d901ddf32d7c84ed4b0f84623ef3a7a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _intensity: 2
+  _radius: 0.25
+  _sampleCount: 3
+  _sampleCountValue: 24
+  _downsampling: 1
+  _occlusionSource: 1
+  _ambientOnly: 0
+  _aoShader: {fileID: 4800000, guid: 7541b5f18b1224a81927d8b1184b122b, type: 3}
+  _quadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1645267444
 GameObject:
   m_ObjectHideFlags: 0
