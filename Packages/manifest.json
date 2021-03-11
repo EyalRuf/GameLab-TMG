@@ -1,4 +1,11 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "Keijiro",
+      "url": "https://registry.npmjs.com",
+      "scopes": [ "jp.keijiro" ]
+    }
+  ],
   "dependencies": {
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ide.rider": "1.1.4",
